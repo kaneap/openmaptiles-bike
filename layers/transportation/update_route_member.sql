@@ -49,28 +49,10 @@ CREATE OR REPLACE FUNCTION osm_route_member_network_type(network text, ref text)
 $$
 SELECT CASE
            -- https://wiki.openstreetmap.org/wiki/United_States_roads_tagging
-           WHEN network = 'US:I' THEN 'us-interstate'::route_network_type
-           WHEN network = 'US:US' THEN 'us-highway'::route_network_type
-           WHEN network LIKE 'US:__' THEN 'us-state'::route_network_type
-           -- https://en.wikipedia.org/wiki/Trans-Canada_Highway
-           WHEN network LIKE 'CA:transcanada%' THEN 'ca-transcanada'::route_network_type
-           WHEN network = 'CA:QC:A' THEN 'ca-provincial-arterial'::route_network_type
-           WHEN network = 'CA:ON:primary' THEN
-               CASE
-                   WHEN ref LIKE '4__' THEN 'ca-provincial-arterial'::route_network_type
-                   WHEN ref = 'QEW' THEN 'ca-provincial-arterial'::route_network_type
-                   ELSE 'ca-provincial'::route_network_type
-               END
-           WHEN network = 'CA:MB:PTH' AND ref = '75' THEN 'ca-provincial-arterial'::route_network_type
-           WHEN network = 'CA:AB:primary' AND ref IN ('2','3','4') THEN 'ca-provincial-arterial'::route_network_type
-           WHEN network = 'CA:BC' AND ref IN ('3','5','99') THEN 'ca-provincial-arterial'::route_network_type
-           WHEN network LIKE 'CA:__' OR network LIKE 'CA:__:%' THEN 'ca-provincial'::route_network_type
-           WHEN network = 'omt-gb-motorway' THEN 'gb-motorway'::route_network_type
-           WHEN network = 'omt-gb-trunk' THEN 'gb-trunk'::route_network_type
-           WHEN network = 'omt-gb-primary' THEN 'gb-primary'::route_network_type
-           WHEN network = 'omt-ie-motorway' THEN 'ie-motorway'::route_network_type
-           WHEN network = 'omt-ie-national' THEN 'ie-national'::route_network_type
-           WHEN network = 'omt-ie-regional' THEN 'ie-regional'::route_network_type
+           WHEN network = 'icn' THEN 'icn'::route_network_type
+           WHEN network = 'ncn' THEN 'ncn'::route_network_type
+           WHEN network = 'rcn' THEN 'rcn'::route_network_type
+           WHEN network = 'lcn' THEN 'lcn'::route_network_type
             END;
 $$ LANGUAGE sql IMMUTABLE
                 PARALLEL SAFE;

@@ -13,34 +13,14 @@ $$
         PERFORM 'route_network_type'::regtype;
     EXCEPTION
         WHEN undefined_object THEN
-            CREATE TYPE route_network_type AS enum (
-                'us-interstate', 'us-highway', 'us-state',
-                'ca-transcanada', 'ca-provincial-arterial', 'ca-provincial',
-                'gb-motorway', 'gb-trunk', 'gb-primary',
-                'ie-motorway', 'ie-national', 'ie-regional',
-                'e-road',
-                'a-road'
-                );
+            CREATE TYPE route_network_type AS enum ('icn', 'ncn', 'rcn', 'lcn');
     END
 $$;
 
 -- Top-level national route networks that should display at the lowest zooms
 CREATE OR REPLACE FUNCTION osm_national_network(network text) RETURNS boolean AS
 $$
-    SELECT network <> '' AND network IN (
-        -- Canada
-        'ca-transcanada', 'ca-provincial-arterial',
-        -- United States
-        'us-interstate', 'us-highway',
-        -- UK
-        'gb-motorway', 'gb-trunk',
-        -- Ireland
-        'ie-motorway', 'ie-national',
-        -- Europe
-        'e-road',
-        -- Asia
-        'a-road'
-    );
+    SELECT network <> '' AND network IN ('icn', 'ncn');
 $$ LANGUAGE sql IMMUTABLE
                 PARALLEL SAFE;
 
